@@ -15,7 +15,7 @@ private val logger = KotlinLogging.logger {}
 @Service
 class StopService(private val webClient: WebClient) {
 
-    suspend fun getStopSchedule(id: String): List<StopScheduleElement> =
+    suspend fun getStopSchedule(id: String): List<StopScheduleElement>? =
             try {
                 val url = "https://svc.metrotransit.org/NexTrip/${id}"
                 logger.info { "making call to ${url}" }
@@ -32,11 +32,11 @@ class StopService(private val webClient: WebClient) {
                 stopScheduleList
             } catch (e: Exception) {
                 logger.warn(e) { "getStopSchedule caught exception for '${id}'" }
-                listOf()
+                null
             }
 
 
-    suspend fun getStopSchedules(ids: List<String>): Map<String, List<StopScheduleElement>> =
+    suspend fun getStopSchedules(ids: List<String>): Map<String, List<StopScheduleElement>?> =
             coroutineScope {
                 logger.info { "in getStops ids.size = ${ids.size} ids = ${ids}" }
 
