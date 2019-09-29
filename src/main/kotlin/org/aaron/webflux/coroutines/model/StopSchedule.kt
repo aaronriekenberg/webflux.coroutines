@@ -30,6 +30,7 @@ data class StopScheduleElement(
 
         @field:JsonProperty("Terminal")
         val terminal: String,
+
         @field:JsonProperty("VehicleHeading")
         val vehicleHeading: Double,
 
