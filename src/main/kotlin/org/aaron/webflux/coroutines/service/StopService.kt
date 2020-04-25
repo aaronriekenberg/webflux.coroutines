@@ -40,13 +40,15 @@ class StopService(private val webClient: WebClient) {
             coroutineScope {
                 logger.info { "in getStops ids.size = ${ids.size} ids = ${ids}" }
 
-                val deferredStopSchedules = ids.map {
-                    it to async {
-                        getStopSchedule(it)
+                val deferredStopSchedules = ids.map { id ->
+                    id to async {
+                        getStopSchedule(id)
                     }
                 }
 
-                deferredStopSchedules.map { it.first to it.second.await() }.toMap()
+                deferredStopSchedules.map { idAndResult ->
+                    idAndResult.first to idAndResult.second.await()
+                }.toMap()
             }
 
 }
