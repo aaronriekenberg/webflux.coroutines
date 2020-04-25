@@ -19,7 +19,7 @@ class CoroutinesRestController(
 
     @GetMapping("/stop/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
     suspend fun getStop(@PathVariable id: String): ResponseEntity<List<StopScheduleElement>> {
-        logger.info { "in getStop id = ${id}" }
+        logger.info { "in getStop id = $id" }
 
         val stopScheduleElement = stopService.getStopSchedule(id)
         return if (stopScheduleElement == null) {
@@ -31,7 +31,7 @@ class CoroutinesRestController(
 
     @GetMapping("/stops", produces = [MediaType.APPLICATION_JSON_VALUE])
     suspend fun getStops(@RequestParam ids: List<String>): Map<String, List<StopScheduleElement>?> {
-        logger.info { "in getStops ids = ${ids}" }
+        logger.info { "in getStops ids = $ids" }
 
         return stopService.getStopSchedules(ids)
     }
