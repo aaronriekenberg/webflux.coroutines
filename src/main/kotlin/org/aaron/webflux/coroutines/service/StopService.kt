@@ -18,7 +18,7 @@ class StopService(private val webClient: WebClient) {
     suspend fun getStopSchedule(id: String): List<StopScheduleElement>? =
             try {
                 val url = "https://svc.metrotransit.org/NexTrip/${id}"
-                logger.info { "making call to ${url}" }
+                logger.info { "making call to $url" }
 
                 val stopScheduleList = webClient
                         .get()
@@ -38,7 +38,7 @@ class StopService(private val webClient: WebClient) {
 
     suspend fun getStopSchedules(ids: List<String>): Map<String, List<StopScheduleElement>?> =
             coroutineScope {
-                logger.info { "in getStops ids.size = ${ids.size} ids = ${ids}" }
+                logger.info { "in getStops ids.size = ${ids.size} ids = $ids" }
 
                 val deferredStopSchedules = ids.map { id ->
                     id to async {
