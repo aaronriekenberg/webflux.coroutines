@@ -20,16 +20,24 @@ class StopService(private val webClient: WebClient) {
                 val url = "https://svc.metrotransit.org/NexTrip/${id}"
                 logger.info { "making call to $url" }
 
-                val stopScheduleList = webClient
+                val exchange = webClient
                         .get()
                         .uri(url)
                         .accept(MediaType.APPLICATION_JSON)
                         .awaitExchange()
-                        .awaitBody<List<StopScheduleElement>>()
 
-                logger.info { "got stopScheduleList size ${stopScheduleList.size}" }
+                logger.info { "exchange.rawStatusCode = ${exchange.rawStatusCode()}" }
 
-                stopScheduleList
+                if (!exchange.statusCode().is2xxSuccessful) {
+                    null
+                } else {
+                    val stopScheduleList = exchange
+                            .awaitBody<List<StopScheduleElement>>()
+
+                    logger.info { "got stopScheduleList size ${stopScheduleList.size}" }
+
+                    stopScheduleList
+                }
             } catch (e: Exception) {
                 logger.warn(e) { "getStopSchedule caught exception for '${id}'" }
                 null
